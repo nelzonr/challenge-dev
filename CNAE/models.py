@@ -3,30 +3,46 @@ from sqlalchemy.orm import relationship
 from database import Base
 
 
+class CNAE(Base):
+    __tablename__ = "cnae"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tipo = Column(String)
+    data = Column(String)
+    valor = Column(String)
+    cpf = Column(String)
+    cartao = Column(String)
+    hora = Column(String)
+    dono = Column(String)
+    loja = Column(String)
+    processed = Column(Boolean)
+
+
 class Lojas(Base):
     __tablename__ = "lojas"
 
     id = Column(Integer, primary_key=True, index=True)
     nome_loja = Column(String, unique=True, index=True)
 
-    operacoes = relationship("Operacoes", back_populates="loja")
+    #operacoes = relationship("Operacoes", back_populates="loja")
 
 
 class Operacoes(Base):
     __tablename__ = "operacoes"
 
     id = Column(Integer, primary_key=True, index=True)
-    tipo_id = Column(Integer, ForeignKey("tipos.id"), nullable=False)
-    data = Column(Date)
-    valor = Column(Integer)
-    cpf = Column(Boolean, default=False)
-    cartao = Column(Integer)
-    hora = Column(Time)
+    tipo = Column(String)
+    data = Column(String)
+    valor = Column(String)
+    cpf = Column(String)
+    cartao = Column(String)
+    hora = Column(String)
     dono = Column(String)
-    loja_id = Column(Integer, ForeignKey("lojas.id"), nullable=False)
+    loja = Column(String)
+    #loja_id = Column(Integer, ForeignKey("lojas.id"), nullable=False)
 
-    tipo = relationship("Tipos", back_populates="operacao_tipo")
-    loja = relationship("Lojas", back_populates="operacoes")
+    #tipo = relationship("Tipos", back_populates="operacao_tipo")
+    #loja = relationship("Lojas", back_populates="operacoes")
 
 
 class Tipos(Base):
@@ -37,4 +53,4 @@ class Tipos(Base):
     natureza = Column(String)
     sinal = Column(String)
 
-    operacao_tipo = relationship("Operacoes", back_populates="tipo")
+    #operacao_tipo = relationship("Operacoes", back_populates="tipo")
