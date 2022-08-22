@@ -48,23 +48,9 @@ async def create_cnae(cnae: CNAE, db: Session = Depends(get_db)):
 
     return {'status': 201, 'transaction': 'Successful'}
 
-@app.get("/tipos")
-async def read_all_tipos(db: Session = Depends(get_db)):
-    return db.query(models.Tipos).all()
 
-
-@app.get("/tipos/{tipo_id}")
-async def read_tipo(tipo_id: int, db: Session = Depends(get_db)):
-    tipo_model = db.query(models.Tipos)\
-        .filter(models.Tipos.id == tipo_id)\
-        .first()
-    if tipo_model is not None:
-        return tipo_model
-    raise http_exception()
-
-
-@app.post("/upload")
-async def upload_files(files: List[UploadFile], db: Session = Depends(get_db)):
+@app.post("/cnae/upload")
+async def upload_cnae_files(files: List[UploadFile], db: Session = Depends(get_db)):
     all_contents = []
     for file in files:
         contents = await file.read()
@@ -90,6 +76,21 @@ async def upload_save(contents, db: Session = Depends(get_db)):
         db.add(operacao_model)
 
     db.commit()
+
+
+@app.get("/tipos")
+async def read_all_tipos(db: Session = Depends(get_db)):
+    return db.query(models.Tipos).all()
+
+
+@app.get("/tipos/{tipo_id}")
+async def read_tipo(tipo_id: int, db: Session = Depends(get_db)):
+    tipo_model = db.query(models.Tipos)\
+        .filter(models.Tipos.id == tipo_id)\
+        .first()
+    if tipo_model is not None:
+        return tipo_model
+    raise http_exception()
 
 
 @app.get("/operacoes")
